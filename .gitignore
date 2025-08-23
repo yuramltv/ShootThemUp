@@ -1,0 +1,16 @@
+# Unreal Engine Project
+
+.vs/
+DerivedDataCache/*
+Intermediate/*
+Saved/*
+Binaries/*
+Backup/
+Build/
+Plugins/
+
+*.sln
+*.vsconfig
+UpgradeLog.htm
+
+.idea/
