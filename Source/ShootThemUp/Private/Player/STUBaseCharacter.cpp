@@ -8,6 +8,9 @@
 #include "Components/STU_CharacterMovementComponent.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Engine/DamageEvents.h"
+
+DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All);
 
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInt)
     : Super(ObjInt.SetDefaultSubobjectClass<USTU_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -22,7 +25,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInt)
     CameraComponent->SetupAttachment(SpringArm);
 
     HealthComponent = CreateDefaultSubobject<USTUHealthComponent>("HealthComp");
-    
+
     HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
     HealthTextComponent->SetupAttachment(GetRootComponent());
 }
@@ -41,6 +44,8 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 
     const auto Health = HealthComponent->GetHealth();
     HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+
+    TakeDamage(0.1f, FDamageEvent{}, Controller, this);
 }
 
 void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
