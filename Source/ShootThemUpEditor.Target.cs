@@ -11,5 +11,7 @@ public class ShootThemUpEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
 		ExtraModuleNames.AddRange( new string[] { "ShootThemUp" } );
+		
+		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 	}
 }

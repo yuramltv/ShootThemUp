@@ -6,9 +6,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "STU_CharacterMovementComponent.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SHOOTTHEMUP_API USTU_CharacterMovementComponent : public UCharacterMovementComponent
 {
