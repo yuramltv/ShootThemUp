@@ -59,11 +59,14 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage* DeathAnimMontage;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Movement")
+    UPROPERTY(EditDefaultsOnly, Category = "Damage")
     FVector2D LandedDamageVelocity{FVector2D(900.0f, 1200.0f)};
 
-    UPROPERTY(EditDefaultsOnly, Category = "Movement")
+    UPROPERTY(EditDefaultsOnly, Category = "Damage")
     FVector2D LandedDamage = FVector2d(10.0f, 90.0f);
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OnDeath")
+    float LifeSpanOnDeath{5.0f};
 
     virtual void BeginPlay() override;
 
