@@ -56,6 +56,9 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "EnhancedInput")
     UInputAction* JumpAction;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Animation")
+    UAnimMontage* DeathAnimMontage;
+
     virtual void BeginPlay() override;
 
 public:
@@ -67,6 +70,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Movement")
     float GetMovementDirection() const;
+
+    void OnDeath();
+    void OnHealthChanged(float Health);
 
 private:
     bool bWantsToRun = false;

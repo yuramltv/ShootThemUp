@@ -1,8 +1,6 @@
 // Shoot Them Up Game. All Rights Reserved.
 
 #include "Components/STUHealthComponent.h"
-#include "Dev/STUFireDamageType.h"
-#include "Dev/STUIceDamageType.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
@@ -16,6 +14,7 @@ void USTUHealthComponent::BeginPlay()
     Super::BeginPlay();
 
     Health = MaxHealth;
+    OnHealthChanged.Broadcast(Health);
 
     AActor* ComponentOwner = GetOwner();
     if (!ComponentOwner)
@@ -34,18 +33,12 @@ void USTUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 void USTUHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-    UE_LOG(LogHealthComponent, Display, TEXT("Damage: %f"), Damage);
-    Health -= Damage;
+    if (Damage <= 0.0f || IsDead()) return;
+    Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
+    OnHealthChanged.Broadcast(Health);
 
-    if (DamageType)
+    if (IsDead())
     {
-        if (DamageType->IsA<USTUFireDamageType>())
-        {
-            UE_LOG(LogHealthComponent, Display, TEXT("So hot!"));
-        }
-        else if (DamageType->IsA<USTUIceDamageType>())
-        {
-            UE_LOG(LogHealthComponent, Display, TEXT("So cold!"));
-        }
+        OnDeath.Broadcast();
     }
 }
