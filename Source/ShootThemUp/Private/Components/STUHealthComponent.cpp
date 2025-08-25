@@ -23,6 +23,16 @@ void USTUHealthComponent::BeginPlay()
         return;
     }
     ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &USTUHealthComponent::OnTakeAnyDamage);
+
+    GetWorld()->GetTimerManager().SetTimer(HasTakenDamageRecentlyHandle, this, &USTUHealthComponent::TurnOnAutoHeal, 1.0);
+}
+void USTUHealthComponent::TurnOnAutoHeal()
+{
+    UE_LOG(LogHealthComponent, Display, TEXT("turning on autoheal"));
+    if (!bHasTakenDamage)
+    {
+        GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &USTUHealthComponent::Heal, HealUpdateRate, bAutoHeal, HealDelay);
+    }
 }
 
 void USTUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -41,4 +51,10 @@ void USTUHealthComponent::OnTakeAnyDamage(
     {
         OnDeath.Broadcast();
     }
+}
+
+void USTUHealthComponent::Heal()
+{
+    Health = FMath::Clamp(Health + HealModifier, HealModifier, MaxHealth);
+    OnHealthChanged.Broadcast(Health);
 }

@@ -26,7 +26,26 @@ public:
     FOnHealthChanged OnHealthChanged;
 
 protected:
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    bool bAutoHeal{true};
+
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    float HealUpdateRate{0.3f};
+
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    float HealDelay{3.0f};
+
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    float HealModifier{1.0f};
+
+    bool bHasTakenDamage{false};
+    FTimerHandle HasTakenDamageRecentlyHandle;
+    FTimerHandle HealTimerHandle;
+    
     virtual void BeginPlay() override;
+
+    void TurnOnAutoHeal();
+    void Heal();
 
     UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "1000.0"))
     float MaxHealth = 100.0f;
