@@ -59,6 +59,12 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage* DeathAnimMontage;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Movement")
+    FVector2D LandedDamageVelocity{FVector2D(900.0f, 1200.0f)};
+
+    UPROPERTY(EditDefaultsOnly, Category = "Movement")
+    FVector2D LandedDamage = FVector2d(10.0f, 90.0f);
+
     virtual void BeginPlay() override;
 
 public:
@@ -71,12 +77,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Movement")
     float GetMovementDirection() const;
 
-    void OnDeath();
-    void OnHealthChanged(float Health);
-
 private:
     bool bWantsToRun = false;
     bool bIsMovingForward = false;
+
+    void OnDeath();
+    void OnHealthChanged(float Health);
+
+    UFUNCTION()
+    void OnGroundLanded(const FHitResult& Hit);
 
     void OnMoveForward(const FInputActionValue& Value);
     void OnMoveRight(const FInputActionValue& Value);
