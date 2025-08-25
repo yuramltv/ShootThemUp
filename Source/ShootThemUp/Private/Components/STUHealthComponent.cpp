@@ -2,7 +2,7 @@
 
 #include "Components/STUHealthComponent.h"
 
-DEFINE_LOG_CATEGORY_STATIC(HealthComponentLog, All, All)
+DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
 USTUHealthComponent::USTUHealthComponent()
 {
@@ -18,7 +18,7 @@ void USTUHealthComponent::BeginPlay()
     AActor* ComponentOwner = GetOwner();
     if (!ComponentOwner)
     {
-        UE_LOG(HealthComponentLog, Warning, TEXT("No owner found"));
+        UE_LOG(LogHealthComponent, Warning, TEXT("No owner found"));
         return;
     }
     ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &USTUHealthComponent::OnTakeAnyDamage);
@@ -32,7 +32,7 @@ void USTUHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 void USTUHealthComponent::OnTakeAnyDamage(
     AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-    // UE_LOG(HealthComponentLog, Display, TEXT("Damage: %f"), Damage);
+    UE_LOG(LogHealthComponent, Display, TEXT("Damage: %f"), Damage);
 
     Health -= Damage;
 }
