@@ -20,7 +20,7 @@ public:
     float GetHealth() const { return Health; }
 
     UFUNCTION(BlueprintCallable)
-    bool IsDead() const { return Health <= 0.0f; }
+    bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
     FOnDeath OnDeath;
     FOnHealthChanged OnHealthChanged;
@@ -29,23 +29,18 @@ protected:
     UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
     bool bAutoHeal{true};
 
-    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal", meta = (EditCondition = "bAutoHeal"))
     float HealUpdateRate{0.3f};
 
-    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal", meta = (EditCondition = "bAutoHeal"))
     float HealDelay{3.0f};
 
-    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal")
+    UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "AutoHeal", meta = (EditCondition = "bAutoHeal"))
     float HealModifier{1.0f};
 
-    bool bHasTakenDamage{false};
-    FTimerHandle HasTakenDamageRecentlyHandle;
     FTimerHandle HealTimerHandle;
-    
-    virtual void BeginPlay() override;
 
-    void TurnOnAutoHeal();
-    void Heal();
+    virtual void BeginPlay() override;
 
     UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "1000.0"))
     float MaxHealth = 100.0f;
@@ -59,4 +54,7 @@ private:
     UFUNCTION()
     void OnTakeAnyDamage(
         AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
+    void Heal();
+    void SetHealth(float NewHealth);
 };
